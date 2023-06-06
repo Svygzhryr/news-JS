@@ -1,8 +1,9 @@
-{
+{    
     "plugins": ["prettier", "import"],
     "extends": [
-        "plugin:prettier/recommended",
-        "prettier"
+        "prettier",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 2020,
@@ -19,3 +20,4 @@
         "class-methods-use-this": "off"
     }
 }
+
