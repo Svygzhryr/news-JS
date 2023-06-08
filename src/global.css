@@ -10,7 +10,10 @@ header {
 
 header h1 {
     font-size: 40px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color:#70d6ff;
     font-weight: 800;
+    text-align: center;
 }
 
 footer {
@@ -32,4 +35,12 @@ footer .copyright a:hover {
 }
 footer .copyright:before {
     content: '©';
+}
+
+@media (max-width: 450px) {
+    header h1 {
+        font-size: 20px;
+
+    }
+
 }
