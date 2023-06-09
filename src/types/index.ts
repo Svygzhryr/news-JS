@@ -1,4 +1,4 @@
-export interface sources {
+export interface iSources {
     id: string;
     name: string;
     description: string;
@@ -6,4 +6,9 @@ export interface sources {
     category: string;
     language: string;
     country: string;
+}
+
+export interface iResp {
+    endpoint: string;
+    options: object;
 }

@@ -8,8 +8,8 @@ class Loader {
     }
 
     getResp(
-        {endpoint, options = {}},
-        callback = () => {
+        { endpoint, options = {} }: { endpoint: string; options: object },
+        callback = (): void => {
             console.error('No callback for GET response');
         }
     ) {
