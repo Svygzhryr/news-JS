@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const EslingPlugin = require('eslint-webpack-plugin');
 
+
 const baseConfig = {
     entry: path.resolve(__dirname, './src/index'),
     mode: 'development',
@@ -15,9 +16,18 @@ const baseConfig = {
                 use: ['style-loader', 'css-loader'],
             },
             {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                type: 'asset/resource',
-            },
+                test: /.(jpe?g|png|svg|gif|jpeg)$/,
+                use: [
+                  {
+                    loader: 'file-loader',
+                    options: {
+                      outputPath: 'assets',
+                      name: '[name].[ext]',
+                      esModule: false,
+                    },
+                  },
+                ],
+              },
         ],
     },
     resolve: {
@@ -44,6 +54,5 @@ const baseConfig = {
 module.exports = ({ mode }) => {
     const isProductionMode = mode === 'prod';
     const envConfig = isProductionMode ? require('./webpack.prod.config') : require('./webpack.dev.config');
-
     return merge(baseConfig, envConfig);
 };
