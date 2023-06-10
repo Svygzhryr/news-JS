@@ -1,4 +1,4 @@
-export interface Source {
+export type Source = {
     id: string;
     name: string;
     description: string;
@@ -6,6 +6,11 @@ export interface Source {
     category: string;
     language: string;
     country: string;
+}
+
+export interface SourcesAPI {
+    sources: Source[];
+    status: string;
 }
 
 export interface Headline {
@@ -24,9 +29,10 @@ export interface HeadlineSource {
     name: string;
 }
 
-export interface SourcesAPI {
-    sources: Source[];
-    status: string;
+export interface HeadlineAPI {
+    status: string,
+    totalResults: number,
+    articles: Headline[],
 }
 
 export interface AppLoaderOptions {
