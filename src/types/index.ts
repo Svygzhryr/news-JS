@@ -1,4 +1,4 @@
-export interface iSources {
+export interface Source {
     id: string;
     name: string;
     description: string;
@@ -8,7 +8,27 @@ export interface iSources {
     country: string;
 }
 
-export interface iResp {
-    endpoint: string;
-    options: object;
+export interface Headline {
+   readonly source: HeadlineSource;
+   readonly author: string;
+   readonly title: string;
+   readonly description: string;
+   readonly url: string;
+   readonly urlToImage: string | null;
+   readonly publishedAt: string;
+   readonly content: string;
+}
+
+export interface HeadlineSource {
+    id: string;
+    name: string;
+}
+
+export interface SourcesAPI {
+    sources: Source[];
+    status: string;
+}
+
+export interface AppLoaderOptions {
+    apiKey?: string;
 }

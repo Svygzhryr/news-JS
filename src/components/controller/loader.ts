@@ -1,14 +1,16 @@
-class Loader {
-    baseLink: string;
-    options: object;
+import { AppLoaderOptions } from '../../types/index';
 
-    constructor(baseLink: string, options: object) {
+class Loader {
+    readonly baseLink: string;
+    options: AppLoaderOptions;
+
+    constructor(baseLink: string, options: AppLoaderOptions) {
         this.baseLink = baseLink;
         this.options = options;
     }
 
-    getResp(
-        { endpoint, options = {} }: { endpoint: string; options: object },
+    protected getResp(
+        { endpoint, options = {} }: { endpoint: string; options: AppLoaderOptions },
         callback = (): void => {
             console.error('No callback for GET response');
         }
@@ -16,7 +18,7 @@ class Loader {
         this.load('GET', endpoint, callback, options);
     }
 
-    errorHandler(res: Response) {
+    protected errorHandler(res: Response) {
         if (!res.ok) {
             if (res.status === 401 || res.status === 404)
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
@@ -26,18 +28,20 @@ class Loader {
         return res;
     }
 
-    makeUrl(options: object, endpoint: string) {
-        const urlOptions: { [key: string]: object } = { ...this.options, ...options };
+    protected makeUrl(options: AppLoaderOptions, endpoint: string) {
+        const urlOptions: { [key: string]: string } = { ...this.options, ...options };
         let url = `${this.baseLink}${endpoint}?`;
 
-        Object.keys(urlOptions).forEach((key) => {
-            url += `${key}=${urlOptions[key]}&`;
+        Object.keys(urlOptions).forEach((key: string) => {
+            if (key) {
+                url += `${key}=${urlOptions[key]}&`;
+            }
         });
 
         return url.slice(0, -1);
     }
 
-    load(method: string, endpoint: string, callback: CallableFunction, options: object = {}) {
+    protected load(method: string, endpoint: string, callback: CallableFunction, options: AppLoaderOptions = {}) {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json())
