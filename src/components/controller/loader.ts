@@ -1,52 +1,55 @@
-import { AppLoaderOptions } from '../../types/index';
+import { APIFunction, AppLoaderOptions, CallBackFunction, Options, RequestConfig } from '../../types/index';
 
-class Loader {
-    readonly baseLink: string;
-    options: AppLoaderOptions;
+abstract class Loader {
+    private readonly baseLink: string;
 
-    constructor(baseLink: string, options: AppLoaderOptions) {
+    private readonly options: Options;
+
+    protected constructor(baseLink: string, options: Options) {
         this.baseLink = baseLink;
         this.options = options;
     }
 
     protected getResp(
-        { endpoint, options = {} }: { endpoint: string; options: AppLoaderOptions },
-        callback = (): void => {
+        { endpoint, options = {} }: RequestConfig,
+        callback: CallBackFunction<AppLoaderOptions, void> = () => {
             console.error('No callback for GET response');
         }
-    ) {
-        this.load('GET', endpoint, callback, options);
+    ): void {
+        this.load({
+            method: 'GET',
+            endpoint,
+            callback,
+            options,
+        });
     }
 
-    protected errorHandler(res: Response) {
+    private errorHandler(res: Response): Response {
         if (!res.ok) {
-            if (res.status === 401 || res.status === 404)
+            if (res.status === 401 || res.status === 404) {
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
+            }
             throw Error(res.statusText);
         }
-
         return res;
     }
 
-    protected makeUrl(options: AppLoaderOptions, endpoint: string) {
-        const urlOptions: { [key: string]: string } = { ...this.options, ...options };
+    private makeUrl({ options, endpoint }: RequestConfig): string {
+        const urlOptions = { ...this.options, ...options };
         let url = `${this.baseLink}${endpoint}?`;
 
-        Object.keys(urlOptions).forEach((key: string) => {
-            if (key) {
-                url += `${key}=${urlOptions[key]}&`;
-            }
+        Object.keys(urlOptions).forEach((key: keyof Options) => {
+            url += `${key}=${urlOptions[key]}&`;
         });
-
         return url.slice(0, -1);
     }
 
-    protected load(method: string, endpoint: string, callback: CallableFunction, options: AppLoaderOptions = {}) {
-        fetch(this.makeUrl(options, endpoint), { method })
-            .then(this.errorHandler)
+    private load({ method, endpoint, callback, options }: APIFunction): void {
+        fetch(this.makeUrl({ options, endpoint }), { method })
+            .then(this.errorHandler.bind(this))
             .then((res) => res.json())
-            .then((data) => callback(data))
-            .catch((err) => console.error(err));
+            .then((data: AppLoaderOptions) => callback(data))
+            .catch((err: Error) => console.error(err));
     }
 }
 

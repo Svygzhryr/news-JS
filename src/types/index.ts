@@ -38,3 +38,22 @@ export interface HeadlineAPI {
 export interface AppLoaderOptions {
     apiKey?: string;
 }
+
+export interface Options {
+    readonly [key: string]: string;
+}
+
+export interface CallBackFunction<T, U> {
+    (arg: T): U;
+}
+
+export interface APIFunction {
+    readonly method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    readonly callback: CallBackFunction<AppLoaderOptions, void>;
+    readonly options?: Options;
+    readonly endpoint: 'sources' | 'everything';
+}
+
+export type RequestConfig = Pick<APIFunction, 'options' | 'endpoint'>;
+
+
