@@ -1,4 +1,4 @@
-import { APIFunction, AppLoaderOptions, CallBackFunction, Options, RequestConfig } from '../../types/index';
+import { APIFunction, AppLoaderOptions, CallBackFunction, Method, Options, RequestConfig } from '../../types/index';
 
 abstract class Loader {
     private readonly baseLink: string;
@@ -17,7 +17,7 @@ abstract class Loader {
         }
     ): void {
         this.load({
-            method: 'GET',
+            method: Method.GET,
             endpoint,
             callback,
             options,

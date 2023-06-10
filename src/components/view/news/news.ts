@@ -14,7 +14,9 @@ class News {
             if (idx % 2) newsClone.querySelector('.news__item')!.classList.add('alt');
 
             const photo = newsClone.querySelector('.news__meta-photo') as HTMLElement;
-            photo.style.backgroundImage = `url(${item.urlToImage || 'assets/news_placeholder.jpg'})`;
+            photo.style.backgroundImage = `url(${
+                item.urlToImage || 'https://awlights.com/wp-content/uploads/sites/31/2017/05/placeholder-news.jpg'
+            })`;
             newsClone.querySelector('.news__meta-author')!.textContent = item.author || item.source.name;
             newsClone.querySelector('.news__meta-date')!.textContent = item.publishedAt
                 .slice(0, 10)

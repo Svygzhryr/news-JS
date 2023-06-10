@@ -6,7 +6,7 @@ export type Source = {
     category: string;
     language: string;
     country: string;
-}
+};
 
 export interface SourcesAPI {
     sources: Source[];
@@ -14,14 +14,14 @@ export interface SourcesAPI {
 }
 
 export interface Headline {
-   readonly source: HeadlineSource;
-   readonly author: string;
-   readonly title: string;
-   readonly description: string;
-   readonly url: string;
-   readonly urlToImage: string | null;
-   readonly publishedAt: string;
-   readonly content: string;
+    readonly source: HeadlineSource;
+    readonly author: string;
+    readonly title: string;
+    readonly description: string;
+    readonly url: string;
+    readonly urlToImage: string | null;
+    readonly publishedAt: string;
+    readonly content: string;
 }
 
 export interface HeadlineSource {
@@ -30,9 +30,9 @@ export interface HeadlineSource {
 }
 
 export interface HeadlineAPI {
-    status: string,
-    totalResults: number,
-    articles: Headline[],
+    status: string;
+    totalResults: number;
+    articles: Headline[];
 }
 
 export interface AppLoaderOptions {
@@ -47,13 +47,19 @@ export interface CallBackFunction<T, U> {
     (arg: T): U;
 }
 
+export enum Method {
+    GET = 'GET',
+    POST = 'POST',
+    PUT = 'PUT',
+    PATCH = 'PATCH',
+    DELETE = 'DELETE',
+}
+
 export interface APIFunction {
-    readonly method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    readonly method: Method.GET | Method.POST | Method.PUT | Method.PATCH | Method.DELETE;
     readonly callback: CallBackFunction<AppLoaderOptions, void>;
     readonly options?: Options;
     readonly endpoint: 'sources' | 'everything';
 }
 
 export type RequestConfig = Pick<APIFunction, 'options' | 'endpoint'>;
-
-
